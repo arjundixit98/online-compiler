@@ -21,9 +21,7 @@ function App() {
       setStatus("");
       setJobID("");
 
-      const { data } = await axios.post("http://localhost:8000/run", payload);
-      console.log(data);
-      const jobId = data.jobId;
+      const { data: { jobId } } = await axios.post("http://localhost:8000/run", payload);
       setJobID(jobId);
 
       let intervalId;
@@ -34,7 +32,7 @@ function App() {
         if (success) {
           const { status: jobStatus, output: jobOutput } = job;
           setStatus(jobStatus);
-          console.log(jobStatus, jobOutput);
+          //console.log(jobStatus, jobOutput);
           if (jobStatus === 'pending')
             return;
 
