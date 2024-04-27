@@ -7,15 +7,56 @@ function App() {
   const [codeOutput, setCodeOutput] = useState("");
   const [errorOutput, setErrorOutput] = useState("");
   const [language, setLanguage] = useState("");
+  const [status, setStatus] = useState();
+  const [jobId, setJobID] = useState();
   const handleSubmit = async () => {
+
     const payload = {
       language,
       code,
     };
     try {
-      const response = await axios.post("http://localhost:8000/run", payload);
-      setCodeOutput(response.data.output);
+      setCodeOutput("");
       setErrorOutput("");
+      setStatus("");
+      setJobID("");
+
+      const { data } = await axios.post("http://localhost:8000/run", payload);
+      console.log(data);
+      const jobId = data.jobId;
+      setJobID(jobId);
+
+      let intervalId;
+      intervalId = setInterval(async () => {
+        const { data: dataRes } = await axios.get("http://localhost:8000/status", { params: { id: jobId } });
+
+        const { job, success, error } = dataRes;
+        if (success) {
+          const { status: jobStatus, output: jobOutput } = job;
+          setStatus(jobStatus);
+          console.log(jobStatus, jobOutput);
+          if (jobStatus === 'pending')
+            return;
+
+          else if (jobStatus === 'error') {
+            setErrorOutput(jobOutput);
+          }
+          else {
+            setCodeOutput(jobOutput);
+          }
+          clearInterval(intervalId);
+        }
+        else {
+          setStatus("Error: Please retry!");
+          console.log(error);
+          setErrorOutput(error);
+          clearInterval(intervalId);
+        }
+      }, 1000);
+
+
+
+
     } catch ({ response }) {
       console.log(response);
       if (response) {
@@ -52,6 +93,8 @@ function App() {
       ></textarea>
       <br />
       <button onClick={handleSubmit}>Submit</button>
+      <p>{status}</p>
+      <p>{jobId && `JobID : ${jobId}`}</p>
       {codeOutput.length > 0 ? <h1>Code Output : </h1> : <></>}
       <p>{codeOutput}</p>
 
