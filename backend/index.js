@@ -4,7 +4,7 @@ const PORT = 8000;
 const app = express();
 
 const { generateFile } = require("./generateFile");
-const { executeCode } = require("./executeCpp");
+const { executeCode } = require("./executeCode");
 
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));

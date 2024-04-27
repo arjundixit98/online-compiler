@@ -16,22 +16,31 @@ function App() {
       const response = await axios.post("http://localhost:8000/run", payload);
       setCodeOutput(response.data.output);
       setErrorOutput("");
-    } catch (error) {
-      console.log(`Got Axios error : ${error}`);
-      setErrorOutput(error.response.data.output.stderr);
-      setCodeOutput("");
+    } catch ({ response }) {
+      console.log(response);
+      if (response) {
+        console.log(`Got Axios error : ${response.data.output.stderr}`);
+        setErrorOutput(response.data.output.stderr);
+        setCodeOutput("");
+      } else {
+        console.log("Error connecting to server!");
+        setCodeOutput("Error connecting to server!");
+      }
     }
   };
 
   return (
     <div className="App">
       <h1>Online Code Compiler</h1>
-      <label>Select a language : </label>
-      <select value={language} onChange={(e) => setLanguage(e.target.value)}>
-        <option value="">Select a language...</option>
-        <option value="cpp">Cpp</option>
-        <option value="py">Python3</option>
-      </select>
+
+      <div>
+        <label>Select a language : </label>
+        <select value={language} onChange={(e) => setLanguage(e.target.value)}>
+          <option value="">Select a language...</option>
+          <option value="cpp">C++</option>
+          <option value="py">Python</option>
+        </select>
+      </div>
       <br />
       <textarea
         rows={20}
