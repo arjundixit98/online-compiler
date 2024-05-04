@@ -7,6 +7,7 @@ const MONGOURI = "mongodb://127.0.0.1:27017/online-compiler";
 const { generateFile } = require("./generateFile");
 const { addJobToQueue } = require("./jobQueue");
 const Job = require("./models/job");
+const problemRoute = require("./routes/problem");
 
 mongoose
   .connect(MONGOURI)
@@ -20,6 +21,7 @@ mongoose
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use("/problems", problemRoute);
 
 app.get("/", (req, res) => {
   return res.status(200).send("<h1>hello from backend<h1>");
@@ -57,7 +59,7 @@ app.post("/run", async (req, res) => {
     const job = await Job.create({ language, filePath });
     const jobId = job["_id"];
     addJobToQueue(jobId);
-    console.log(job);
+    // console.log(job);
 
     return res.status(201).json({ success: true, jobId });
   } catch (err) {
