@@ -48,17 +48,37 @@ app.get("/status", async (req, res) => {
     return res.status(400).json({ success: false, error: JSON.stringify(err) });
   }
 });
+
+// app.post("/run", async (req, res) => {
+//   const { language, code } = req.body;
+//   if (!language || !code)
+//     return res.status(400).json({ error: "Code or language is empty" });
+
+//   try {
+//     //need to generate a c++ file with contents from the request
+//     const filePath = await generateFile(language, code);
+//     const job = await Job.create({ language, filePath });
+//     const jobId = job["_id"];
+//     addJobToQueue(jobId);
+//     // console.log(job);
+
+//     return res.status(201).json({ success: true, jobId });
+//   } catch (err) {
+//     return res.status(500).json({ success: false, error: JSON.stringify(err) });
+//   }
+// });
+
 app.post("/run", async (req, res) => {
-  const { language, code } = req.body;
+  const { language, code, problemId } = req.body;
   if (!language || !code)
     return res.status(400).json({ error: "Code or language is empty" });
 
   try {
     //need to generate a c++ file with contents from the request
-    const filePath = await generateFile(language, code);
+    const filePath = await generateFile(language, code, problemId);
     const job = await Job.create({ language, filePath });
     const jobId = job["_id"];
-    addJobToQueue(jobId);
+    addJobToQueue(jobId, (isTestCase = true));
     // console.log(job);
 
     return res.status(201).json({ success: true, jobId });

@@ -1,76 +1,76 @@
-import React, { useState } from "react";
+import React from "react";
 import "./stylesheets/testcase.css";
 
-const TestCase = () => {
-  const [activeButton, setActiveButton] = useState("testcase");
+const TestCase = ({
+  problemData,
+  codeOutput,
+  runtime,
+  errorOutput: errorString,
+  submitButtonClicked,
+}) => {
+  const {
+    testCaseInputString: input,
+    testCaseExpectedOutputString: expectedOutput,
+    testCasesCount,
+  } = problemData;
 
-  const handleButtonClick = (buttonName) => {
-    setActiveButton(buttonName);
+  let errorOutput = "";
+  if (errorString) {
+    errorOutput = JSON.parse(errorString).stderr;
+  }
+
+  const isCorrect = (v1, v2, n) => {
+    v1 = v1.split("\n");
+    v2 = v2.split("\n");
+    for (let index = 0; index < n; index++) {
+      if (v1[index] !== v2[index]) return false;
+    }
+    return true;
   };
+
+  let answer = "";
+  if (codeOutput) {
+    answer = isCorrect(expectedOutput, codeOutput, testCasesCount)
+      ? "Correct Answer"
+      : "Wrong Answer";
+  }
+
   return (
     <div className="testcase">
-      <div className="tc-header">
-        <button
-          onClick={() => {
-            handleButtonClick("testcase");
-          }}
-        >
-          Test Case
-        </button>
-        <button
-          className="btn-test-res"
-          onClick={() => {
-            handleButtonClick("testresult");
-          }}
-        >
-          Test Result
-        </button>
-      </div>
-      {activeButton === "testcase" && <TestCaseView />}
-      {activeButton === "testresult" && <TestResultView />}
-    </div>
-  );
-};
+      {answer ? (
+        <div className="tr-status">
+          <div className="ans-status">{answer}</div>
+          <div className="runtime">Execution Time: {runtime}s</div>
+        </div>
+      ) : errorOutput ? (
+        <div className="tr-status">
+          <div>Compilation Error...</div>
+        </div>
+      ) : submitButtonClicked ? (
+        <div className="tr-status">
+          <div>Submission Queued...</div>
+        </div>
+      ) : (
+        <div></div>
+      )}
 
-const TestCaseView = () => {
-  return (
-    <div className="tc-main">
-      <div>Case 1 </div>
-      <div className="inp1">
-        x = <input type="text" value={1} />
-      </div>
-      <div className="inp2">
-        y = <input type="text" value={2} />
-      </div>
-    </div>
-  );
-};
+      <p>Sample Input</p>
+      <div className="sample-input">{input}</div>
+      <p className="exp">Expected Output</p>
+      <div className="expected-output">{expectedOutput}</div>
+      {codeOutput && (
+        <>
+          <p className="out">Your Output</p>
+          <div className="outputt">{codeOutput}</div>
+        </>
+      )}
 
-const TestResultView = () => {
-  return (
-    <div className="tr-main">
-      <div className="tr-status">
-        <div className="ans-status">Wrong Answer</div>
-        <div className="runtime">Runtime: 34ms</div>
-      </div>
-
-      <div className="tc-name">Case 1</div>
-
-      <div className="inp">
-        <p>Input</p>
-        x = <input type="text" value={1} />
-        <br />
-        y = <input type="text" value={2} />
-      </div>
-      <div className="out">
-        <p>Output</p>
-        <input type="text" value={2} />
-      </div>
-
-      <div className="exp">
-        <p>Expected</p>
-        <input type="text" value={2} />
-      </div>
+      {errorOutput && (
+        <>
+          <p className="error">Error</p>
+          <div className="error-output">{errorOutput}</div>
+        </>
+      )}
     </div>
   );
 };

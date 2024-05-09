@@ -8,10 +8,16 @@ import { javascript } from "@codemirror/lang-javascript";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import "./stylesheets/editor.css";
 
-function Editor() {
+function Editor({
+  problemId,
+  setCodeOutput,
+  setRuntime,
+  setErrorOutput,
+  setSubmitButtonClicked,
+}) {
   const [code, setCode] = useState("");
-  const [codeOutput, setCodeOutput] = useState("");
-  const [errorOutput, setErrorOutput] = useState("");
+  // const [codeOutput, setCodeOutput] = useState("");
+  // const [errorOutput, setErrorOutput] = useState("");
   const [language, setLanguage] = useState("cpp");
   const [status, setStatus] = useState();
   const [jobId, setJobID] = useState();
@@ -30,29 +36,39 @@ function Editor() {
     localStorage.setItem("default-language", language);
   };
 
-  const renderTimeDetails = () => {
-    let result = "";
-
-    if (!jobDetails) return "";
-
-    let { submittedAt, startedAt, completedAt } = jobDetails;
-
-    submittedAt = moment(submittedAt).toString();
-    result += `Submitted At : ${submittedAt}`;
-
-    if (!startedAt || !completedAt) return result;
-
+  const renderTimeDetails = (startedAt, completedAt) => {
     const start = moment(startedAt);
     const end = moment(completedAt);
     const executionTime = end.diff(start, "seconds", true);
-    result += `Execution Time : ${executionTime}s`;
-    return result;
+    return `${executionTime}`;
   };
+
+  // const renderTimeDetails = () => {
+  //   let result = "";
+
+  //   if (!jobDetails) return "";
+
+  //   let { submittedAt, startedAt, completedAt } = jobDetails;
+
+  //   submittedAt = moment(submittedAt).toString();
+  //   result += `Submitted At : ${submittedAt}`;
+
+  //   if (!startedAt || !completedAt) return result;
+
+  //   const start = moment(startedAt);
+  //   const end = moment(completedAt);
+  //   const executionTime = end.diff(start, "seconds", true);
+
+  //   result += `Execution Time : ${executionTime}s`;
+  //   console.log(result);
+  //   return `${executionTime}`;
+  // };
 
   const handleSubmit = async () => {
     const payload = {
       language,
       code,
+      problemId,
     };
     try {
       setCodeOutput("");
@@ -60,7 +76,7 @@ function Editor() {
       setStatus("");
       setJobID("");
       setJobDetails(null);
-
+      setSubmitButtonClicked(true);
       const {
         data: { jobId },
       } = await axios.post("http://localhost:8000/run", payload);
@@ -75,7 +91,12 @@ function Editor() {
 
         const { job, success, error } = dataRes;
         if (success) {
-          const { status: jobStatus, output: jobOutput } = job;
+          const {
+            status: jobStatus,
+            output: jobOutput,
+            startedAt,
+            completedAt,
+          } = job;
           setStatus(jobStatus);
           setJobDetails(job);
           //console.log(jobStatus, jobOutput);
@@ -84,6 +105,7 @@ function Editor() {
             setErrorOutput(jobOutput);
           } else {
             setCodeOutput(jobOutput);
+            setRuntime(renderTimeDetails(startedAt, completedAt));
           }
           clearInterval(intervalId);
         } else {
@@ -124,9 +146,10 @@ function Editor() {
       </div>
 
       <CodeMirror
+        className="code-mirror-editor"
         value={code}
-        height="300px"
-        width="800px"
+        height="280px"
+        width="670px"
         extensions={[javascript({ jsx: true })]}
         onChange={(e) => {
           setCode(e);
@@ -136,15 +159,15 @@ function Editor() {
       <button className="btn-submit" onClick={handleSubmit}>
         Submit
       </button>
-      <p>{status}</p>
-      <p>{jobId && `JobID : ${jobId}`}</p>
-      <p>{renderTimeDetails()}</p>
+      {/* <p>{status}</p>
+      <p>{jobId && `JobID : ${jobId}`}</p> */}
+      {/* <p>{renderTimeDetails()}</p> */}
 
-      {codeOutput.length > 0 ? <h1>Code Output : </h1> : <></>}
-      <p>{codeOutput}</p>
+      {/* {codeOutput.length > 0 ? <h1>Code Output : </h1> : <></>}
+      <p>{codeOutput}</p> */}
 
-      {errorOutput.length > 0 ? <h1>Error Output : </h1> : <></>}
-      <p>{errorOutput}</p>
+      {/* {errorOutput.length > 0 ? <h1>Error Output : </h1> : <></>}
+      <p>{errorOutput}</p> */}
     </div>
   );
 }

@@ -27,7 +27,15 @@ const getNextSequenceValue = async () => {
 };
 
 router.post("/add-problem", async (req, res) => {
-  const { problemName, problemDescription, inputs, expectedOutputs } = req.body;
+  const {
+    problemName,
+    problemDescription,
+    inputs,
+    expectedOutputs,
+    testCasesCount,
+    testCaseInput,
+    testCaseExpectedOutput,
+  } = req.body;
 
   if (!problemName || !problemDescription || !inputs || !expectedOutputs) {
     return res.status(400).json({
@@ -41,6 +49,9 @@ router.post("/add-problem", async (req, res) => {
     description: problemDescription,
     inputs,
     expectedOutputs,
+    testCasesCount,
+    testCaseInputString: testCaseInput,
+    testCaseExpectedOutputString: testCaseExpectedOutput,
     problemNumber: await getNextSequenceValue(),
   });
 

@@ -11,7 +11,8 @@
 
 .label-lang{
   margin-left: 10px;
-  color:rgb(33, 32, 32);
+  /* color:rgb(33, 32, 32); */
+  color: white;
   font-size: 25px;
   font-weight: 600;
 }
@@ -51,5 +52,10 @@
   margin-left: 10px;
   margin-top: 10px;
   cursor: pointer;
+}
+
+.code-mirror-editor{
+  border: 1px solid grey;
+  scrollbar-color: grey rgb(48, 43, 43);
 }
 

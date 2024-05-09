@@ -1,12 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./stylesheets/loadproblem.css";
 import Editor from "./Editor";
 import TestCase from "./TestCase";
 const LoadProblem = () => {
+  const containerRef = useRef(null);
+
   const [problem, setProblem] = useState(null);
   const { id: problemId } = useParams();
+  const [codeOutput, setCodeOutput] = useState("");
+  const [errorOutput, setErrorOutput] = useState("");
+  if ((codeOutput || errorOutput) && containerRef.current) {
+    const container = containerRef.current;
+    setTimeout(() => {
+      container.scrollTop = container.scrollHeight - container.clientHeight;
+    }, 0); // Delay ensures proper DOM update
+  }
+  const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
+  const [runtime, setRuntime] = useState("");
   useEffect(() => {
     const fetchProblem = async () => {
       try {
@@ -15,6 +27,7 @@ const LoadProblem = () => {
           { params: { id: problemId } }
         );
         console.log(data);
+
         setProblem(data);
       } catch (error) {
         console.log("Error", error);
@@ -25,23 +38,6 @@ const LoadProblem = () => {
 
   return (
     <div className="load-problem-page">
-      {/* <h1>Current Problem</h1>
-      {problem ? (
-        <div>
-          Id : {problem._id}
-          <br />
-          Name : {problem.name}
-          <br />
-          Desciption : {problem.description}
-          <br />
-          Inputs : {problem.inputs}
-          <br />
-          Expected Outputs : {problem.expectedOutputs}
-        </div>
-      ) : (
-        <h2>Loading..</h2>
-      )} */}
-
       <main>
         <div className="problem-section">
           {problem ? (
@@ -50,25 +46,45 @@ const LoadProblem = () => {
                 {problem.problemNumber} : {problem.name}
               </p>
               <p className="problem-desc">{problem.description}</p>
-              <div className="input">
-                <p className="problem-inp">Input:</p>
-                <p className="example">{problem.inputs}</p>
-              </div>
-              <div className="output">
-                <p className="problem-out">Output:</p>
-                <p className="example">{problem.expectedOutputs}</p>
+              <div className="testcase-sec">
+                <div className="input">
+                  <p className="problem-inp">Input:</p>
+                  <p className="example">{problem.testCaseInputString}</p>
+                </div>
+                <div className="output">
+                  <p className="problem-out">Output:</p>
+                  <p className="example">
+                    {problem.testCaseExpectedOutputString}
+                  </p>
+                </div>
               </div>
             </div>
           ) : (
             <h2>Loading..</h2>
           )}
         </div>
-        <div className="right-container">
-          <Editor />
-          <TestCase />
+        <div ref={containerRef} className="right-container">
+          <Editor
+            problemId={problemId}
+            setCodeOutput={setCodeOutput}
+            setRuntime={setRuntime}
+            setErrorOutput={setErrorOutput}
+            setSubmitButtonClicked={setSubmitButtonClicked}
+          />
+          {problem && (
+            <TestCase
+              problemData={problem}
+              codeOutput={codeOutput}
+              runtime={runtime}
+              errorOutput={errorOutput}
+              submitButtonClicked={submitButtonClicked}
+              // input={problem.testCaseInputString}
+              // expectedOutput={problem.testCaseExpectedOutputString}
+              // output={problem.output}
+            />
+          )}
         </div>
       </main>
-      <footer>Footer</footer>
     </div>
   );
 };

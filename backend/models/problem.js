@@ -22,6 +22,18 @@ const problemSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  testCasesCount: {
+    type: Number,
+    required: true,
+  },
+  testCaseInputString: {
+    type: String,
+    required: true,
+  },
+  testCaseExpectedOutputString: {
+    type: String,
+    required: true,
+  },
 });
 
 const problemModel = new mongoose.model("problems", problemSchema);

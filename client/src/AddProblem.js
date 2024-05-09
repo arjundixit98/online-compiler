@@ -6,6 +6,9 @@ function AddProblem() {
   const [problemDescription, setProblemDescription] = useState("");
   const [inputs, setInputs] = useState("");
   const [expectedOutputs, setExpectedOutputs] = useState("");
+  const [testCasesCount, setTestCasesCount] = useState("");
+  const [testCaseInput, setTestCaseInput] = useState("");
+  const [testCaseExpectedOutput, setTestCaseExpectedOutput] = useState("");
 
   const handleSubmit = async () => {
     const payload = {
@@ -13,6 +16,9 @@ function AddProblem() {
       problemDescription,
       inputs,
       expectedOutputs,
+      testCasesCount,
+      testCaseInput,
+      testCaseExpectedOutput,
     };
 
     try {
@@ -41,6 +47,18 @@ function AddProblem() {
       </label>
 
       <br />
+
+      <label>
+        testcases count :
+        <input
+          type="text"
+          value={testCasesCount}
+          onChange={(e) => setTestCasesCount(e.target.value)}
+          placeholder="Test case count"
+        />
+      </label>
+
+      <br />
       <label>
         Description :
         <textarea
@@ -63,6 +81,17 @@ function AddProblem() {
           placeholder="Problem Inputs"
         />
       </label>
+      <br />
+      <label>
+        Problem Input TestCase:
+        <textarea
+          rows={10}
+          cols={70}
+          value={testCaseInput}
+          onChange={(e) => setTestCaseInput(e.target.value)}
+          placeholder="Problem Inputs"
+        />
+      </label>
 
       <br />
       <label>
@@ -71,6 +100,17 @@ function AddProblem() {
           type="text"
           value={expectedOutputs}
           onChange={(e) => setExpectedOutputs(e.target.value)}
+          placeholder="Problem Expected Outputs"
+        />
+      </label>
+      <br />
+      <label>
+        Problem expected output testcase:
+        <textarea
+          rows={10}
+          cols={70}
+          value={testCaseExpectedOutput}
+          onChange={(e) => setTestCaseExpectedOutput(e.target.value)}
           placeholder="Problem Expected Outputs"
         />
       </label>

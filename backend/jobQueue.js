@@ -5,7 +5,7 @@ const { executeCode } = require("./executeCode");
 const NUM_WORKERS = 5;
 
 jobQueue.process(NUM_WORKERS, async ({ data }) => {
-  const { id: jobId } = data;
+  const { id: jobId, isTestCase } = data;
   const job = await Job.findById(jobId);
   if (job === undefined) {
     throw Error("job not found");
@@ -15,7 +15,11 @@ jobQueue.process(NUM_WORKERS, async ({ data }) => {
   try {
     //we need to run the file and send the response
     job["startedAt"] = new Date();
-    const { status, output } = await executeCode(job.language, job.filePath);
+    const { status, output } = await executeCode(
+      job.language,
+      job.filePath,
+      isTestCase
+    );
     job["completedAt"] = new Date();
     job["status"] = "success";
     job["output"] = output;
@@ -35,8 +39,8 @@ jobQueue.on("failed", (error) => {
   console.log(error.data.id, "failed", error.failedReason);
 });
 
-const addJobToQueue = async (jobId) => {
-  await jobQueue.add({ id: jobId });
+const addJobToQueue = async (jobId, isTestCase) => {
+  await jobQueue.add({ id: jobId, isTestCase });
 };
 
 module.exports = {

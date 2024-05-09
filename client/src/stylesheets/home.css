@@ -4,7 +4,8 @@
   flex-direction: row;
   justify-content: space-evenly;
   /* background-color:darkolivegreen; */
-  background-color: rgba(6, 6, 6, 0.77);
+  /* background-color: rgba(6, 6, 6, 0.77); */
+  background-color: rgba(36,39,42,255);
   position: fixed;
   top: 0;
   left: 0;

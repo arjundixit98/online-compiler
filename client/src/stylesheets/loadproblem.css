@@ -6,14 +6,17 @@
 
 .load-problem-page{
   margin-top: 10px;
-  background-color : rgb(255, 255, 255); 
-  height: 98vh;
+  /* background-color: rgba(39,38,39,255); */
+  background-color: rgba(28,30,34,255);
+  color: white;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
 main {
-  margin-top: 60px;
+  margin-top: 40px;
+  /* padding-top: 10px; */
   /* background-color: yellow; */
   height: 95%;
   display: flex;
@@ -40,21 +43,42 @@ main {
   font-size: large;
   margin-top: 25px;
 }
-.input, .output{
+
+.testcase-sec{
+  display: flex;
+  flex-direction: row;
+  /* background-color: rgb(73, 73, 73); */
+  background-color: rgba(36,39,42,255);
+  padding: 10px;
+  color: white;
+  border-radius: 10px;
   margin-top: 30px;
-  vertical-align: middle;
 }
+
+.input, .output{
+  white-space: pre-wrap;
+  width: 45%;
+  padding: 10px;
+}
+.input{
+  border-right: 1px solid white;
+}
+
+
+
 .problem-inp,.problem-out{
   font-size: 20px;
   font-weight: bolder;
-  display: inline;
- 
+  margin-bottom: 10px;
+  border-bottom: 1px solid white;
+  padding: 5px;
+
 }
 
+
+
 .example{
-  display: inline;
   font-size: 18px;
-  margin-left: 15px;
 }
 
 .right-container{
@@ -62,6 +86,11 @@ main {
   flex: 1;
   display: flex;
   flex-direction: column;
+  height: 720px;
+  max-height: 720px; 
+  overflow-y: scroll;
+  scrollbar-color: grey rgb(48, 43, 43);
+  
 }
 
 .editor-section{
@@ -69,15 +98,4 @@ main {
   flex: 1;
 }
 
-.testcase-section
-{
-  /* background-color: aqua; */
-  flex: 1;
-}
-footer{
-  /* background-color: purple; */
-  display: fixed;
-  bottom: 0;
-  left: 0;
-}
 
