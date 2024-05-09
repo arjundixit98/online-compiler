@@ -14,6 +14,8 @@ function Editor({
   setRuntime,
   setErrorOutput,
   setSubmitButtonClicked,
+  height,
+  width,
 }) {
   const [code, setCode] = useState("");
   // const [codeOutput, setCodeOutput] = useState("");
@@ -148,8 +150,8 @@ function Editor({
       <CodeMirror
         className="code-mirror-editor"
         value={code}
-        height="280px"
-        width="670px"
+        height={height}
+        width={width}
         extensions={[javascript({ jsx: true })]}
         onChange={(e) => {
           setCode(e);

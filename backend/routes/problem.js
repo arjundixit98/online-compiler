@@ -30,14 +30,12 @@ router.post("/add-problem", async (req, res) => {
   const {
     problemName,
     problemDescription,
-    inputs,
-    expectedOutputs,
     testCasesCount,
     testCaseInput,
     testCaseExpectedOutput,
   } = req.body;
 
-  if (!problemName || !problemDescription || !inputs || !expectedOutputs) {
+  if (!problemName || !problemDescription) {
     return res.status(400).json({
       status: "error",
       message: "Either name or description is empty!",
@@ -47,8 +45,6 @@ router.post("/add-problem", async (req, res) => {
   const problem = await Problem.create({
     name: problemName,
     description: problemDescription,
-    inputs,
-    expectedOutputs,
     testCasesCount,
     testCaseInputString: testCaseInput,
     testCaseExpectedOutputString: testCaseExpectedOutput,

@@ -24,7 +24,7 @@ const executePy = async (filePath) => {
   return { status: "success", output: stdout };
 };
 
-const executeCpp = async (filePath) => {
+const executeCpp = async (filePath, isTestCase) => {
   const jobId = path.basename(filePath).split(".")[0];
   const outputPath = path.join(outputsDir, `${jobId}.out`);
 

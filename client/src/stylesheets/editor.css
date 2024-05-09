@@ -2,6 +2,12 @@
   font-size: 18px;
 }
 
+.editor-container{
+  font-size: 18px;
+  width: 60%;
+  height: 40%;
+}
+
 .select-lang-container{
   display: flex;
   flex-direction: row;

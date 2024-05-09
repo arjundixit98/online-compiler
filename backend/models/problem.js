@@ -14,14 +14,6 @@ const problemSchema = mongoose.Schema({
     required: true,
   },
   //comma separated inputs
-  inputs: {
-    type: String,
-    required: true,
-  },
-  expectedOutputs: {
-    type: String,
-    required: true,
-  },
   testCasesCount: {
     type: Number,
     required: true,

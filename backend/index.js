@@ -49,7 +49,7 @@ app.get("/status", async (req, res) => {
   }
 });
 
-// app.post("/run", async (req, res) => {
+// app.post("/quick-run", async (req, res) => {
 //   const { language, code } = req.body;
 //   if (!language || !code)
 //     return res.status(400).json({ error: "Code or language is empty" });
@@ -59,7 +59,7 @@ app.get("/status", async (req, res) => {
 //     const filePath = await generateFile(language, code);
 //     const job = await Job.create({ language, filePath });
 //     const jobId = job["_id"];
-//     addJobToQueue(jobId);
+//     addJobToQueue(jobId, (isTestCase = false));
 //     // console.log(job);
 
 //     return res.status(201).json({ success: true, jobId });
@@ -70,6 +70,9 @@ app.get("/status", async (req, res) => {
 
 app.post("/run", async (req, res) => {
   const { language, code, problemId } = req.body;
+  let isTestCase = true;
+  if (!problemId) isTestCase = false;
+
   if (!language || !code)
     return res.status(400).json({ error: "Code or language is empty" });
 
@@ -78,7 +81,7 @@ app.post("/run", async (req, res) => {
     const filePath = await generateFile(language, code, problemId);
     const job = await Job.create({ language, filePath });
     const jobId = job["_id"];
-    addJobToQueue(jobId, (isTestCase = true));
+    addJobToQueue(jobId, isTestCase);
     // console.log(job);
 
     return res.status(201).json({ success: true, jobId });

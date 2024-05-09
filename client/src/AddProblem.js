@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import "./stylesheets/addproblem.css";
 function AddProblem() {
   const [problemName, setProblemName] = useState("");
   const [problemDescription, setProblemDescription] = useState("");
-  const [inputs, setInputs] = useState("");
-  const [expectedOutputs, setExpectedOutputs] = useState("");
   const [testCasesCount, setTestCasesCount] = useState("");
   const [testCaseInput, setTestCaseInput] = useState("");
   const [testCaseExpectedOutput, setTestCaseExpectedOutput] = useState("");
@@ -14,8 +12,6 @@ function AddProblem() {
     const payload = {
       problemName,
       problemDescription,
-      inputs,
-      expectedOutputs,
       testCasesCount,
       testCaseInput,
       testCaseExpectedOutput,
@@ -33,8 +29,8 @@ function AddProblem() {
   };
 
   return (
-    <div>
-      <h1>Problem Set</h1>
+    <div className="add-prob-page">
+      <h1>Add New Problem</h1>
 
       <label>
         Problem Name :
@@ -49,7 +45,7 @@ function AddProblem() {
       <br />
 
       <label>
-        testcases count :
+        Number of Test Cases :
         <input
           type="text"
           value={testCasesCount}
@@ -62,56 +58,34 @@ function AddProblem() {
       <label>
         Description :
         <textarea
-          rows={20}
+          rows={8}
           cols={70}
           value={problemDescription}
           onChange={(e) => setProblemDescription(e.target.value)}
-          placeholder="Problem Description"
-        />
-      </label>
-
-      <br />
-
-      <label>
-        Problem Input :
-        <input
-          type="text"
-          value={inputs}
-          onChange={(e) => setInputs(e.target.value)}
-          placeholder="Problem Inputs"
+          placeholder="Provide description for problem"
         />
       </label>
       <br />
       <label>
-        Problem Input TestCase:
+        TestCase Input:
         <textarea
-          rows={10}
+          rows={8}
           cols={70}
           value={testCaseInput}
           onChange={(e) => setTestCaseInput(e.target.value)}
-          placeholder="Problem Inputs"
+          placeholder="Provide test case input"
         />
       </label>
 
       <br />
       <label>
-        Problem expected output :
-        <input
-          type="text"
-          value={expectedOutputs}
-          onChange={(e) => setExpectedOutputs(e.target.value)}
-          placeholder="Problem Expected Outputs"
-        />
-      </label>
-      <br />
-      <label>
-        Problem expected output testcase:
+        Testcase Output:
         <textarea
-          rows={10}
+          rows={8}
           cols={70}
           value={testCaseExpectedOutput}
           onChange={(e) => setTestCaseExpectedOutput(e.target.value)}
-          placeholder="Problem Expected Outputs"
+          placeholder="Problem test case expected output"
         />
       </label>
       <br />

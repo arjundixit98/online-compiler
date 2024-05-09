@@ -70,6 +70,8 @@ const LoadProblem = () => {
             setRuntime={setRuntime}
             setErrorOutput={setErrorOutput}
             setSubmitButtonClicked={setSubmitButtonClicked}
+            height={"280px"}
+            width={"670px"}
           />
           {problem && (
             <TestCase

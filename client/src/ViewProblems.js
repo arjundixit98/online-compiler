@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import "./stylesheets/viewproblems.css"; // Import your CSS file
 
 function ViewProblems() {
   const [problemList, setProblemList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -11,22 +13,30 @@ function ViewProblems() {
         const { data } = await axios.get(
           "http://localhost:8000/problems/get-problems"
         );
-
         setProblemList(data);
+        setLoading(false);
       } catch (error) {
-        console.log("Error occured", error);
+        console.log("Error occurred", error);
+        setLoading(false);
       }
     };
     fetchData();
   }, []);
 
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
+
   return (
-    <div>
-      <h1>Problem List</h1>;
-      <ul>
-        {problemList.map((problem, index) => (
-          <li key={index}>
-            <Link to={`/load-problem/${problem._id}`}>{problem.name}</Link>
+    <div className="problem-list-container">
+      <h1 className="page-title">Problem Set</h1>
+      <ul className="problem-list">
+        {problemList.map((problem) => (
+          <li className="problem-item" key={problem._id}>
+            <Link to={`/load-problem/${problem._id}`} className="problem-link">
+              <span className="problem-number">{problem.problemNumber}.</span>
+              <span className="problem-name">{problem.name}</span>
+            </Link>
           </li>
         ))}
       </ul>
