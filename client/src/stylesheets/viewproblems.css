@@ -1,0 +1,49 @@
+
+
+.problem-list-container {
+  padding: 20px;
+  text-align: center;
+  margin-top: 45px;
+}
+
+.page-title {
+  font-size: 24px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+}
+
+.problem-list {
+  list-style: none;
+  padding: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+}
+
+.problem-item {
+  margin-bottom: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.problem-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: row;
+}
+
+.problem-number {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333; /* Problem number color */
+}
+
+.problem-name {
+  font-size: 18px;
+  margin-left: 8px; 
+  color: #555; /* Problem name color */
+}
