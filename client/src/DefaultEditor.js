@@ -1,12 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import React, { useState } from "react";
 import "./stylesheets/loadproblem.css";
 import Editor from "./Editor";
-import TestCase from "./TestCase";
 import CodeOutputView from "./CodeOutputView";
 const DefaultEditor = () => {
-  const containerRef = useRef(null);
   const [codeOutput, setCodeOutput] = useState("");
   const [errorOutput, setErrorOutput] = useState("");
 
@@ -27,7 +23,6 @@ const DefaultEditor = () => {
           />
           {submitButtonClicked ? (
             <CodeOutputView
-              // problemData={problem}
               codeOutput={codeOutput}
               runtime={runtime}
               errorOutput={errorOutput}

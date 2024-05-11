@@ -15,7 +15,7 @@ const LoadProblem = () => {
     const container = containerRef.current;
     setTimeout(() => {
       container.scrollTop = container.scrollHeight - container.clientHeight;
-    }, 0); // Delay ensures proper DOM update
+    }, 0);
   }
   const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
   const [runtime, setRuntime] = useState("");
@@ -80,9 +80,6 @@ const LoadProblem = () => {
               runtime={runtime}
               errorOutput={errorOutput}
               submitButtonClicked={submitButtonClicked}
-              // input={problem.testCaseInputString}
-              // expectedOutput={problem.testCaseExpectedOutputString}
-              // output={problem.output}
             />
           )}
         </div>

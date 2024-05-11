@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import "./stylesheets/addproblem.css";
 function AddProblem() {
@@ -38,7 +38,7 @@ function AddProblem() {
           type="text"
           value={problemName}
           onChange={(e) => setProblemName(e.target.value)}
-          placeholder="Problem Name"
+          placeholder="Problem name"
         />
       </label>
 

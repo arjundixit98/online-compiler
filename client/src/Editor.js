@@ -18,13 +18,7 @@ function Editor({
   width,
 }) {
   const [code, setCode] = useState("");
-  // const [codeOutput, setCodeOutput] = useState("");
-  // const [errorOutput, setErrorOutput] = useState("");
   const [language, setLanguage] = useState("cpp");
-  const [status, setStatus] = useState();
-  const [jobId, setJobID] = useState();
-  const [jobDetails, setJobDetails] = useState(null);
-
   useEffect(() => {
     const defaultLang = localStorage.getItem("default-language") || "cpp";
     setLanguage(defaultLang);
@@ -45,27 +39,6 @@ function Editor({
     return `${executionTime}`;
   };
 
-  // const renderTimeDetails = () => {
-  //   let result = "";
-
-  //   if (!jobDetails) return "";
-
-  //   let { submittedAt, startedAt, completedAt } = jobDetails;
-
-  //   submittedAt = moment(submittedAt).toString();
-  //   result += `Submitted At : ${submittedAt}`;
-
-  //   if (!startedAt || !completedAt) return result;
-
-  //   const start = moment(startedAt);
-  //   const end = moment(completedAt);
-  //   const executionTime = end.diff(start, "seconds", true);
-
-  //   result += `Execution Time : ${executionTime}s`;
-  //   console.log(result);
-  //   return `${executionTime}`;
-  // };
-
   const handleSubmit = async () => {
     const payload = {
       language,
@@ -75,14 +48,10 @@ function Editor({
     try {
       setCodeOutput("");
       setErrorOutput("");
-      setStatus("");
-      setJobID("");
-      setJobDetails(null);
       setSubmitButtonClicked(true);
       const {
         data: { jobId },
       } = await axios.post("http://localhost:8000/run", payload);
-      setJobID(jobId);
 
       let intervalId;
       intervalId = setInterval(async () => {
@@ -99,8 +68,6 @@ function Editor({
             startedAt,
             completedAt,
           } = job;
-          setStatus(jobStatus);
-          setJobDetails(job);
           //console.log(jobStatus, jobOutput);
           if (jobStatus === "pending") return;
           else if (jobStatus === "error") {
@@ -111,7 +78,6 @@ function Editor({
           }
           clearInterval(intervalId);
         } else {
-          setStatus("Error: Please retry!");
           console.log(error);
           setErrorOutput(error);
           clearInterval(intervalId);
@@ -161,15 +127,6 @@ function Editor({
       <button className="btn-submit" onClick={handleSubmit}>
         Submit
       </button>
-      {/* <p>{status}</p>
-      <p>{jobId && `JobID : ${jobId}`}</p> */}
-      {/* <p>{renderTimeDetails()}</p> */}
-
-      {/* {codeOutput.length > 0 ? <h1>Code Output : </h1> : <></>}
-      <p>{codeOutput}</p> */}
-
-      {/* {errorOutput.length > 0 ? <h1>Error Output : </h1> : <></>}
-      <p>{errorOutput}</p> */}
     </div>
   );
 }
